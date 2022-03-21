@@ -1,3 +1,5 @@
+const JOURNAL = require("./journal")
+
 require("./journal")
 
 /**
@@ -32,4 +34,37 @@ function tableFor(event, journal) {
     return table
 }
 
-console.log(tableFor("carrot", JOURNAL))
+
+
+/**
+ * Finding all events present in the list
+ * @param {{"events": string[], "squirrel": boolean}} journal - journal of logged events and squirell transformations 
+ * @returns {string[]} - list of all unique events from the journal
+*/
+
+function journalEvents(journal) {
+    let events = []
+    for (let entry of journal) {
+        for (let event of entry.events) {
+            if (!events.includes(event)) {
+                events.push(event)
+            }
+        }
+    }
+    return events
+}
+
+for (let event of journalEvents(JOURNAL)) {
+    let correlation = phi(tableFor(event, JOURNAL))
+    if (correlation > 0.1 || correlation < -0.1) {
+        console.log(`${event} : ${correlation}`)
+    }
+}
+
+for (let entry of JOURNAL) {
+    if (entry.events.includes("peanuts") && !entry.events.includes("brushed teeth")
+    ) {
+        entry.events.push("peanut teeth")
+    }
+}
+
