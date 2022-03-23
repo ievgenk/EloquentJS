@@ -76,4 +76,41 @@ function arrayToList(arr) {
     return list
 }
 
-console.log(arrayToList([1, 2]))
+function listToArray(list) {
+    let arr = []
+    for (let node = list; node; node = node.rest) {
+        arr.push(node.value)
+    }
+    return arr
+}
+
+function prepend(element, list) {
+    return { value: element, rest: list }
+}
+
+function nth(list, index) {
+    if (index === 0) {
+        return list.value
+    }
+    else if (!list) {
+        return null
+    }
+    return nth(list.rest, index - 1)
+}
+
+function isObjectAndNotNull(obj) {
+    return typeof (obj) === 'object' && obj !== null
+}
+
+function deepEqual(a, b) {
+    if (a === b) return true
+    else if (!isObjectAndNotNull(a) || !isObjectAndNotNull(b)) return false
+
+    let aKeys = Object.keys(a), bKeys = Object.keys(b)
+    if (aKeys.length !== bKeys.length) return false
+
+    for (let key of aKeys) {
+        if (!bKeys.includes(key) || !deepEqual(a[key], b[key])) return false
+    }
+    return true
+}
